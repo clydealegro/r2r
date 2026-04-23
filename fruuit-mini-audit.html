@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRO Scorecard — Fruuit Consulting</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0f0d;
+    --surface: #131a17;
+    --surface-alt: #1a2320;
+    --border: #2a3530;
+    --text: #e0e6e3;
+    --text-muted: #8a9690;
+    --accent: #ccfaa2;
+    --red: #ff6b6b;
+    --amber: #fbbf24;
+    --green: #4ade80;
+    --red-bg: rgba(255,107,107,0.08);
+    --amber-bg: rgba(251,191,36,0.08);
+    --green-bg: rgba(74,222,128,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .header-left h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  .header-left p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .header-right {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* Section Labels */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+
+  /* Scorecard Grid */
+  .score-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .score-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .score-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .score-item-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .score-item-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+
+  .score-bar-wrap {
+    height: 4px;
+    background: var(--surface-alt);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .score-bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .bar-red { background: var(--red); }
+  .bar-amber { background: var(--amber); }
+  .bar-green { background: var(--green); }
+
+  .score-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* Overall Score */
+  .overall-score {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .overall-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .overall-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .overall-verdict {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Problems */
+  .problem {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+
+  .problem-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .problem h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .problem-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    margin-top: 14px;
+  }
+
+  .problem p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .fix-preview {
+    color: var(--accent) !important;
+    font-style: italic;
+  }
+
+  /* Working Well */
+  .working-well {
+    margin-bottom: 48px;
+  }
+
+  .working-well-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .working-well-item:last-child {
+    border-bottom: none;
+  }
+
+  .check {
+    color: var(--green);
+    font-size: 14px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .working-well-item p {
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  /* Next Step */
+  .next-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 48px;
+  }
+
+  .next-step p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  .next-step .signature {
+    margin-top: 20px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .next-step .sig-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  @media (max-width: 600px) {
+    .score-grid { grid-template-columns: 1fr; }
+    .overall-number { font-size: 44px; }
+    .header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .header-right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h2>CRO Scorecard</h2>
+      <p>Prepared by Clyde Alegro, OXVN</p>
+    </div>
+    <div class="header-right">
+      Fruuit Consulting<br>
+      fruuitconsulting.com<br>
+      April 23, 2026
+    </div>
+  </div>
+
+  <!-- SECTION 1: SCORECARD -->
+  <div class="section-label">Section 01</div>
+  <div class="section-title">Scorecard Snapshot</div>
+  <div class="section-subtitle">10 conversion areas scored on a 1–10 scale.</div>
+
+  <div class="score-grid">
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Hero / Above the Fold</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:30%"></div></div>
+      <div class="score-number">3 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Messaging Clarity</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:40%"></div></div>
+      <div class="score-number">4 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Social Proof</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:20%"></div></div>
+      <div class="score-number">2 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">CTA Strategy</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:30%"></div></div>
+      <div class="score-number">3 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Page Flow & Structure</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:40%"></div></div>
+      <div class="score-number">4 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Trust & Credibility</span>
+        <span class="score-item-badge badge-amber">Needs Work</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-amber" style="width:50%"></div></div>
+      <div class="score-number">5 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Visual Design / UX</span>
+        <span class="score-item-badge badge-amber">Needs Work</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-amber" style="width:70%"></div></div>
+      <div class="score-number">7 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Objection Handling</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:20%"></div></div>
+      <div class="score-number">2 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Audience Segmentation</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:30%"></div></div>
+      <div class="score-number">3 / 10</div>
+    </div>
+
+    <div class="score-item">
+      <div class="score-item-header">
+        <span class="score-item-name">Urgency / Compliance Hook</span>
+        <span class="score-item-badge badge-red">Critical</span>
+      </div>
+      <div class="score-bar-wrap"><div class="score-bar bar-red" style="width:30%"></div></div>
+      <div class="score-number">3 / 10</div>
+    </div>
+
+  </div>
+
+  <!-- OVERALL SCORE -->
+  <div class="overall-score">
+    <div class="overall-number" style="color: var(--red);">36<span style="font-size: 24px; color: var(--text-muted);">/100</span></div>
+    <div class="overall-label">Overall Score — Critical</div>
+    <p class="overall-verdict">Fruuit has a genuinely rare differentiator — former MSCI and Sustainalytics methodology builders — but the homepage buries it under generic messaging and provides zero evidence to back it up. Visitors who could become $25K+ clients are leaving before they understand what makes Fruuit different.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 2: 3 PROBLEMS -->
+  <div class="section-label">Section 02</div>
+  <div class="section-title">The 3 Things Costing You Clients Right Now</div>
+  <div class="section-subtitle"></div>
+
+  <div class="problem">
+    <div class="problem-number">Problem 01</div>
+    <h3>Your Hero Headline Could Be Any Consulting Firm's — There's Zero Differentiation</h3>
+    <div class="problem-label">What's happening</div>
+    <p>The first thing visitors see is "World Class Sustainability Expertise." That's the kind of line McKinsey, Deloitte, or a one-person shop could all use. It says nothing about what Fruuit actually does or why it's different. The real story — that your team literally built ESG rating methodologies at MSCI and Sustainalytics — is right there in the hero, but it sits below the headline in smaller text. Most visitors won't read past a generic headline to find it. The one thing that makes Fruuit genuinely rare in this space isn't leading.</p>
+    <div class="problem-label">Why it costs you clients</div>
+    <p>A VP of Sustainability lands on this page from a Google search or LinkedIn link. They've probably looked at 3-4 ESG consulting sites already this week. If your headline doesn't immediately signal something different, they bounce in under 8 seconds. They never reach the subheadline where the actual differentiator lives. You're losing the visitors most likely to buy because the hook doesn't hook.</p>
+    <div class="problem-label">The fix (preview)</div>
+    <p class="fix-preview">The insider story is your credibility hook, but a headline also needs to tell visitors what you do for them in one read. The full audit covers how to combine both into a single line that differentiates and clarifies.</p>
+  </div>
+
+  <div class="problem">
+    <div class="problem-number">Problem 02</div>
+    <h3>Your Homepage Has Zero Social Proof — Not a Single Testimonial, Logo, or Result</h3>
+    <div class="problem-label">What's happening</div>
+    <p>The stat bar claims "dozens of ESG ratings improvement success stories" and "10+ countries" — but the homepage shows exactly zero evidence. No testimonials. No client logos. No before/after rating improvements. No case study snippets. Proof exists on a separate Testimonials page, but that requires a visitor to actively seek it out through the nav. Most won't.</p>
+    <div class="problem-label">Why it costs you clients</div>
+    <p>Decision-makers evaluating a $25K–$100K+ engagement need evidence before they fill out a contact form. Unsubstantiated claims in a stat bar actually hurt credibility more than they help — they read as marketing copy rather than proof. The contact form asks for budget commitment. Without a single named testimonial or result visible on the page, visitors don't have enough trust to take that step.</p>
+    <div class="problem-label">The fix (preview)</div>
+    <p class="fix-preview">Even one specific, named testimonial placed above the contact form would change the conversion math for this page. The full audit covers proof hierarchy — what types of evidence work best for ESG consulting buyers and exactly where to position them in the page flow.</p>
+  </div>
+
+  <div class="problem">
+    <div class="problem-number">Problem 03</div>
+    <h3>Your Contact Form Asks for Budget Before You've Built Any Trust</h3>
+    <div class="problem-label">What's happening</div>
+    <p>The main conversion path is a contact form asking for budget range ($25K–$100K+), desired start date, and a detailed message. That's a high-commitment ask. Meanwhile, the lower-friction "Book a Call" button is tucked at the bottom of the page, after the contact form, and in the nav bar — not positioned as the primary action. The page structure puts the hardest ask first and the easiest ask last.</p>
+    <div class="problem-label">Why it costs you clients</div>
+    <p>Professional services conversion follows a trust ladder. A visitor who just arrived doesn't know if Fruuit is the right fit yet. Asking them to declare budget before they've had a conversation feels presumptuous. It filters out exactly the high-value prospects who are evaluating options carefully. A 15-minute call is almost always an easier yes than a form that asks someone to declare budget before they've even spoken to you.</p>
+    <div class="problem-label">The fix (preview)</div>
+    <p class="fix-preview">The CTA hierarchy needs restructuring. The full audit includes specific recommendations for conversion path design — which asks go where, and how to lower friction without lowering quality.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 3: WHAT'S WORKING -->
+  <div class="section-label">Section 03</div>
+  <div class="section-title">What You're Doing Well</div>
+
+  <div class="working-well">
+    <div class="working-well-item">
+      <span class="check">&#10003;</span>
+      <p>The MSCI/Sustainalytics origin story in the subheadline is a genuinely powerful differentiator — you built the systems your clients are trying to master. That's rare positioning that most competitors can't claim.</p>
+    </div>
+    <div class="working-well-item">
+      <span class="check">&#10003;</span>
+      <p>Clean, professional visual design that signals credibility. The Salient theme is well-configured, green brand palette feels on-brand for ESG, and the SVG animations add polish without feeling gimmicky.</p>
+    </div>
+    <div class="working-well-item">
+      <span class="check">&#10003;</span>
+      <p>The NDA checkbox on the contact form shows you understand your buyers. Enterprise ESG teams deal with sensitive pre-disclosure data — offering an NDA upfront signals that you get their world.</p>
+    </div>
+    <div class="working-well-item">
+      <span class="check">&#10003;</span>
+      <p>Four clearly defined service offerings (Ratings Consultant, Fractional Analyst, Advisory, Investor Integration) cover distinct use cases without overlap. Visitors can self-identify which one fits their situation.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 4: NEXT STEP -->
+  <div class="section-label">Section 04</div>
+  <div class="section-title">Next Step</div>
+
+  <div class="next-step">
+    <p>This scorecard covers what's visible from the surface. The full CRO audit goes deeper — detailed analysis of all 10 areas, specific copy rewrites, a visual page reconstruction, and a prioritized action plan.</p>
+    <p style="margin-top: 12px;">If you'd like the full audit, I have a few slots open this month. Happy to walk through what a full engagement looks like — no pressure, just clarity on what it would take to turn your site into your best-performing sales asset.</p>
+    <p class="signature">Clyde Alegro</p>
+    <p class="sig-role">Founder, OXVN</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    OXVN &middot; Conversion Optimization for ESG & Sustainability &middot; 2026
+  </div>
+
+</div>
+
+</body>
+</html>
